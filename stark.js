@@ -53,6 +53,15 @@ var aboutHandler=function(req,res){
 var contactHandler=function(req,res){
 	res.render('contact');
 }
+var hoodriverHandler=function(req,res){
+	res.render('tours/hood-river');
+}
+var requestgrouprateHandler=function(req,res){
+	res.render('tours/request-group-rate');
+}
+var avengersgrandHandler=function(req,res){
+	res.render('tours/avengers-grand');
+}
 var a404Handler=function(req,res,next){
 	res.render('404');
 	res.status(404);
@@ -67,7 +76,10 @@ var a500Handler=function(err,res,req,next){
 //所有路由>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 app.get('/',homeHandler);				//home
 app.get('/about',aboutHandler);			//about
-app.get('/contact',contactHandler)		//contact
+app.get('/contact',contactHandler);		//contact
+app.get('/tours/hood-river',hoodriverHandler);//hood-river
+app.get('/tours/request-group-rate',requestgrouprateHandler);//request-group-rate
+app.get('/tours/avengers-grand',avengersgrandHandler);//avengers-grand
 app.use(a404Handler);					//404
 app.use(a500Handler);					//500
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

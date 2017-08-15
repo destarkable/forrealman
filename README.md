@@ -14,4 +14,4 @@ res.local是要传送给视图的上下文的一部分。
 	之后做非全局的页面测试，发现了pageTestScript的用处，果然是写单独页面测试的东西。嗯推理很准确，哈哈哈哈哈哈。嗯，同样是再写一个about-tests.js放在／qa里面，刚才定义的是全局测试，是写到main.handlebars里，现在个性化单独页面测试也在main.handlebars里写好了，有判断。很全面，嗯。
 2.跨页测试
 	哈哈哈，搞笑，zombie不支持windows哈哈哈。看来这本书选的很对啊，很棒啊。记住这个作者，以后多看看他的书。
-	
+	新创建页面hood-river.handlebars和request-group-rate.handlebars。要进行的跨页测试就是这两个页面的跨页测试，测试内容是在hood-river页面点链接进入request-group-rate页面时request-group-rate页面有没有记录是从哪点进去的，就是天每天那些表单和那些js。可以先手动测试一遍。把表单别隐藏，直接看，多好。
