@@ -44,7 +44,14 @@ var aboutHandler=function(req,res){
 	var num=Math.floor(Math.random()*lyrics.length);
 	var randomLyrics=lyrics[num];
 	var randomLink=links[num];
-	res.render('about',{lyrics:randomLyrics, link:randomLink});
+	res.render('about',{
+		lyrics:randomLyrics,
+		link:randomLink,
+		pageTestScript:'/qa/tests-about.js'
+	});
+}
+var contactHandler=function(req,res){
+	res.render('contact');
 }
 var a404Handler=function(req,res,next){
 	res.render('404');
@@ -60,6 +67,7 @@ var a500Handler=function(err,res,req,next){
 //所有路由>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 app.get('/',homeHandler);				//home
 app.get('/about',aboutHandler);			//about
+app.get('/contact',contactHandler)		//contact
 app.use(a404Handler);					//404
 app.use(a500Handler);					//500
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
