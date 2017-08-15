@@ -7,7 +7,7 @@ var handlebars = require('express3-handlebars') 	//
 app.engine('handlebars', handlebars.engine);	//
 app.set('view engine', 'handlebars');			//
 
-app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname+'/public'));	//用static中间件制定包含静态资源的默认目录
 
 app.set('port',process.env.PORT||3000);
 app.listen(app.get('port'),function(){
