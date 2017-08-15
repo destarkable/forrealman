@@ -3,11 +3,15 @@ var express = require('express');
 var app = express();
 
 var handlebars = require('express3-handlebars') 	//
-	.create({ defaultLayout:'main' });			//设置handlebars视图引擎
-app.engine('handlebars', handlebars.engine);	//
-app.set('view engine', 'handlebars');			//
+	.create({ defaultLayout:'main' });				//设置handlebars视图引擎
+app.engine('handlebars', handlebars.engine);		//
+app.set('view engine', 'handlebars');				//
 
-app.use(express.static(__dirname+'/public'));	//用static中间件制定包含静态资源的默认目录
+app.use(express.static(__dirname+'/public'));		//用static中间件制定包含静态资源的默认目录(相当于一个已经定义好的函数)
+app.use(function(req,res,next){
+	res.locals.showTests=app.get('env')!='production'&&req.query.test==='1';
+	next();
+});													//自定义中间件，用来判定是否显示测试页面(是自定函数)
 
 app.set('port',process.env.PORT||3000);
 app.listen(app.get('port'),function(){
