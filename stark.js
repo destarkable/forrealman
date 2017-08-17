@@ -39,6 +39,7 @@ var aboutHandler=function(req,res){
 	res.render('about',{
 		lyrics:come[0],
 		link:come[1],
+		song:"<iframe frameborder=\"no\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" width=304 height=52 src=\"//music.163.com/outchain/player?type=2&id=33599620&auto=1&height=32\"></iframe>",
 		pageTestScript:'/qa/tests-about.js'
 	});
 }
