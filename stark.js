@@ -5,7 +5,15 @@ var fortune=require('./lib/fortune.js');
 var weather=require('./lib/weather.js');
 
 var handlebars = require('express3-handlebars') 	//
-	.create({ defaultLayout:'main' });				//设置handlebars视图引擎
+	.create({ defaultLayout:'main',					//
+	helpers:{										//
+		section:function(name,options){				//
+			if(!this._sections) this._sections={};	//
+			this._sections[name]=options.fn(this);	//
+			return null;							//设置handlebars视图引擎
+		}											//
+	}												//
+});													//
 app.engine('handlebars', handlebars.engine);		//
 app.set('view engine', 'handlebars');				//
 
