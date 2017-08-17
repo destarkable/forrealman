@@ -2,6 +2,7 @@
 var express = require('express');
 var app = express();
 var fortune=require('./lib/fortune.js');
+var weather=require('./lib/weather.js');
 
 var handlebars = require('express3-handlebars') 	//
 	.create({ defaultLayout:'main' });				//设置handlebars视图引擎
@@ -13,6 +14,12 @@ app.use(function(req,res,next){
 	res.locals.showTests=app.get('env')!='production'&&req.query.test==='1';
 	next();
 });													//自定义中间件，用来判定是否显示测试页面(是自定函数)
+
+app.use(function(req,res,next){
+	if(!res.locals.partials) res.locals.partials = {};
+ 	res.locals.partials.weatherContext = weather.getWeatherData();
+ 	next();
+});													//又是一个中间件，用来加载天气组件(也是自定函数)
 
 app.set('port',process.env.PORT||3000);
 app.listen(app.get('port'),function(){
