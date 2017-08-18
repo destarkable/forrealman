@@ -5,7 +5,7 @@ var fortune=require('./lib/fortune.js');
 var weather=require('./lib/weather.js');
 
 var handlebars = require('express3-handlebars') 	//
-	.create({ defaultLayout:'main',					//
+	.create({ defaultLayout:'main2',					//
 	helpers:{										//
 		section:function(name,options){				//
 			if(!this._sections) this._sections={};	//
