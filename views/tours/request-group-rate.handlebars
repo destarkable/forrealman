@@ -1,13 +1,19 @@
-<h1>查询团购优惠</h1>
-<form>
-	<input type="text" name="referrer">
-	Name: <input type="text" id="fieldName" name="name"><br>
-	Group size: <input type="text" name="groupSize"><br>
-	Email: <input type="email" name="email"><br>
-	<input type="submit" name="submit">
-</form>
 <script>
 	$(document).ready(function(){
 		$('input[name="referrer"]').val(document.referrer);
 	});
 </script>
+<section class="projects-section">
+	<div class="container">
+		<div class="title-section">
+			<h1>查询团购优惠</h1>
+			<form>
+				<input type="text" name="referrer"><br>
+				Name: <input type="text" id="fieldName" name="name"><br>
+				Group size: <input type="text" name="groupSize"><br>
+				Email: <input type="email" name="email"><br>
+				<input type="submit" name="submit">
+			</form>
+		</div>
+	</div>			
+</section>

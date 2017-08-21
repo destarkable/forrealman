@@ -5,7 +5,7 @@ var fortune=require('./lib/fortune.js');
 var weather=require('./lib/weather.js');
 
 var handlebars = require('express3-handlebars') 	//
-	.create({ defaultLayout:'main2',					//
+	.create({ defaultLayout:'main2',				//
 	helpers:{										//
 		section:function(name,options){				//
 			if(!this._sections) this._sections={};	//
@@ -63,6 +63,17 @@ var requestgrouprateHandler=function(req,res){
 var avengersgrandHandler=function(req,res){
 	res.render('tours/avengers-grand');
 }
+var nurseryrhymeHandler=function(req,res){
+	res.render('nursery-rhyme');
+}
+var datanurseryrhymeHandler=function(req,res){
+	res.json({
+		animal:'squirrel',
+		body:'tail',
+		adjective:'bushy',
+		noun:'heck',
+	});
+}
 var a404Handler=function(req,res,next){
 	res.render('404');
 	res.status(404);
@@ -81,6 +92,8 @@ app.get('/contact',contactHandler);		//contact
 app.get('/tours/hood-river',hoodriverHandler);//hood-river
 app.get('/tours/request-group-rate',requestgrouprateHandler);//request-group-rate
 app.get('/tours/avengers-grand',avengersgrandHandler);//avengers-grand
+app.get('/nursery-rhyme',nurseryrhymeHandler);//nursery-rhyme
+app.get('/data/nursery-rhyme',datanurseryrhymeHandler);//data-nursery-rhyme
 app.use(a404Handler);					//404
 app.use(a500Handler);					//500
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
