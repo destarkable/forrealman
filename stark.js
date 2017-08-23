@@ -29,8 +29,6 @@ app.use(function(req,res,next){
  	next();
 });													//又是一个中间件，用来加载天气组件(也是自定函数)
 
-app.use(require('body-parser')());					//body-parser中间件
-
 app.set('port',process.env.PORT||3000);
 app.listen(app.get('port'),function(){
 	console.log('Express started on http:/\/localhost:'+app.get('port')+';\npress Contrl + c to terminate.');
@@ -76,23 +74,6 @@ var datanurseryrhymeHandler=function(req,res){
 		noun:'heck',
 	});
 }
-var processHandler=function(req, res){
-    if(req.xhr || req.accepts('json,html')==='json'){
-        res.send({ success: true });
-    } else {
-        res.redirect(303, '/thank-you');
-    }
-}
-var thankyouHandler=function(req, res){
-	res.render('thank-you');
-}
-var newsletterHandler=function(req, res){
-    // we will learn about CSRF later...for now, we just
-    // provide a dummy value
-    res.render('newsletter', { csrf: 'CSRF token goes here' });
-}
-
-
 var a404Handler=function(req,res,next){
 	res.render('404');
 	res.status(404);
@@ -113,10 +94,6 @@ app.get('/tours/request-group-rate',requestgrouprateHandler);//request-group-rat
 app.get('/tours/avengers-grand',avengersgrandHandler);//avengers-grand
 app.get('/nursery-rhyme',nurseryrhymeHandler);//nursery-rhyme
 app.get('/data/nursery-rhyme',datanurseryrhymeHandler);//data-nursery-rhyme
-app.get('/thank-you',thankyouHandler);//thank-you
-app.get('/newsletter',newsletterHandler);//newsletter
-app.post('/process',processHandler);
-
 app.use(a404Handler);					//404
 app.use(a500Handler);					//500
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
