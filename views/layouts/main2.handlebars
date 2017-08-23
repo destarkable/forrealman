@@ -104,8 +104,10 @@
 								<ul class="dropdown">
 									<li><a href="/about">About Us</a></li>
 									<li><a href="/contact">Contact</a></li>
-									<li><a href="/404">404 Error</a></li>
 									<li><a href="/nursery-rhyme">Nursery Rhyme</a></li>
+									<li><a href="/newsletter">newsletter</a></li>
+									<li><a href="/subscribe">subscribe</a></li>
+
 								</ul>
 							</li>
 							<li class="drop"><a href="/tours/avengers-grand">Tours</a>
@@ -363,6 +365,13 @@
 		<!-- services-offer 
 			================================================== -->
 		<!-- End services-offer section -->
+		{{#if flash}}
+				<div class="alert alert-dismissible alert-{{flash.type}}">
+					<button type="button" class="close" 
+						data-dismiss="alert" aria-hidden="true">&times;</button>
+					<strong>{{flash.intro}}</strong> {{{flash.message}}}
+				</div>
+		{{/if}}
 {{{body}}}
 		<!-- projects 
 			================================================== -->
@@ -382,7 +391,7 @@
 
 		<!-- testimonial-section 
 			================================================== -->
-		<section class="testimonial-section">
+<!--		<section class="testimonial-section">
 			<div class="container">
 
 				<div class="testimonial-box">
@@ -407,7 +416,7 @@
 
 			</div>
 		</section>
-		<!-- End testimonial section -->
+-->		<!-- End testimonial section -->
 
 		<!-- quote-section 
 			================================================== -->

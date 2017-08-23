@@ -1,0 +1,15 @@
+module.exports={
+	cookieSecret:'1111',
+	qq:{
+		user:'645458412@qq.com',
+		password:'qdqcjflkjxhrbfee',
+	},
+	mongo:{
+		development:{
+			connectionString:'mongodb://destarkable:damj3265@ds131583.mlab.com:31583/ironman',
+		},
+		production:{
+			connectionString:'mongodb://destarkable:damj3265@ds131583.mlab.com:31583/ironman',
+		},
+	},
+};
