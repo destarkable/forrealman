@@ -24,8 +24,11 @@ app.listen(app.get('port'),function(){
 });
 //------------------------------------------------------------------
 
-//变量、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
-//、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+//发送邮件完整的，记得先把email.js放在lib里面，当然还有credeatials.js、、、、、、、、、、、
+//先把它封印在这，不然每一次开服务器都要发封邮件
+/*var emailService=require('./lib/email.js')(credentials);
+emailService.send('destarkable@163.com','Hood River tour is on sale today!','Go get it while hot!');*/
+//、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
 //所有路由处理函数和中间件函数*****************************************************
 var homeHandler=function(req,res){
@@ -155,7 +158,7 @@ var flashMiddle=function(req,res,next){
 
 app.use(express.static(__dirname+'/public'));					//用static中间件制定包含静态资源的默认目录(相当于一个已经定义好的函数)
 app.use(testMiddle);											//自定义中间件，用来判定是否显示测试页面(是自定函数)
-app.use(weatherMiddle);										//又是一个中间件，用来加载天气组件(也是自定函数)
+app.use(weatherMiddle);											//又是一个中间件，用来加载天气组件(也是自定函数)
 app.use(require('body-parser')());								//body-parser中间件
 app.use(require('cookie-parser')(credentials.cookieSecret));	//cookie-parser中间件
 app.use(require('express-session')());							//express-session中间件
