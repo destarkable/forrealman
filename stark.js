@@ -35,11 +35,8 @@ var homeHandler=function(req,res){
 	res.render('home');
 };
 var aboutHandler=function(req,res){
-	var come=fortune.getFortune();
 	res.render('about',{
-		lyrics:come[0],
-		link:come[1],
-		song:"<iframe frameborder=\"no\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" width=304 height=52 src=\"//music.163.com/outchain/player?type=2&id=33599620&auto=1&height=32\"></iframe>",
+		
 		pageTestScript:'/qa/tests-about.js'
 	});
 };
@@ -47,7 +44,11 @@ var contactHandler=function(req,res){
 	res.render('contact');
 };
 var hoodriverHandler=function(req,res){
-	res.render('tours/hood-river');
+	var come=fortune.getFortune();
+	res.render('tours/hood-river',{
+		lyrics:come[0],
+		link:come[1]
+	});
 };
 var requestgrouprateHandler=function(req,res){
 	res.render('tours/request-group-rate');
@@ -128,12 +129,12 @@ var subscribeprocessorHandler=function(req, res){
 var a404Handler=function(req,res,next){
 	res.render('404');
 	res.status(404);
-};
+};/*
 var a500Handler=function(err,res,req,next){
 	console.log(err.stack);
 	res.render('500');
 	res.status(500);
-};
+};*/
 
 var testMiddle=function(req,res,next){
 	res.locals.showTests=app.get('env')!='production'&&req.query.test==='1';
@@ -181,7 +182,7 @@ app.post('/process',processHandler);
 app.post('/subscribeprocessor',subscribeprocessorHandler);		//subscribe的post
 
 app.use(a404Handler);											//404
-app.use(a500Handler);											//500
+//app.use(a500Handler);											//500
 
 
 
