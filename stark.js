@@ -4,6 +4,8 @@ var app = express();
 var fortune=require('./lib/fortune.js');
 var weather=require('./lib/weather.js');
 var credentials = require('./credentials.js');
+var formidable = require('formidable');
+var fs = require('fs');
 
 var handlebars = require('express3-handlebars') 	//
 	.create({ defaultLayout:'main2',				//
@@ -129,12 +131,12 @@ var subscribeprocessorHandler=function(req, res){
 var a404Handler=function(req,res,next){
 	res.render('404');
 	res.status(404);
-};/*
+};
 var a500Handler=function(err,res,req,next){
 	console.log(err.stack);
 	res.render('500');
 	res.status(500);
-};*/
+};
 
 var testMiddle=function(req,res,next){
 	res.locals.showTests=app.get('env')!='production'&&req.query.test==='1';
@@ -149,6 +151,42 @@ var flashMiddle=function(req,res,next){
 	res.locals.flash=req.session.flash;
 	delete req.session.flash;								
 	next();
+};
+var contestvacationHandler = function(req, res){
+	var now = new Date();
+	res.render('contest/vacation-photo', { year: now.getFullYear(), month: now.getMonth() });
+};
+
+var dataDir = __dirname + '/data';
+var vacationPhotoDir = dataDir + '/vacation-photo';
+var contestvacationprocessorHandler = function(req, res){
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files){
+        if(err) {
+            req.session.flash = {
+                type: 'danger',
+                intro: 'Oops!',
+                message: 'There was an error processing your submission. ' +
+                    'Pelase try again.',
+            };
+            return res.redirect(303, '/contest/vacation-photo');
+        }
+        var photo = files.photo;
+        var dir = vacationPhotoDir + '/' + Date.now();
+        var path = dir + '/' + photo.name;
+        fs.mkdirSync(dir);
+        fs.renameSync(photo.path, dir + '/' + photo.name);
+
+        req.session.flash = {
+            type: 'success',
+            intro: 'Good luck!',
+            message: 'You have been entered into the contest.',
+        };
+        return res.redirect(303, '/contest/vacation-photo/entries');
+    });
+};
+var caontestvacationentriesHandler= function(req, res){
+	res.render('contest/vacation-photo/entries');
 };
 //*********************************************************************
 
@@ -177,12 +215,15 @@ app.get('/data/nursery-rhyme',datanurseryrhymeHandler);			//data-nursery-rhyme
 app.get('/thank-you',thankyouHandler);							//thank-you
 app.get('/newsletter',newsletterHandler);						//newsletter
 app.get('/subscribe',subscribeHandler);							//subscribe
+app.get('/contest/vacation-photo', contestvacationHandler);
+app.get('/contest/vacation-photo/entries', caontestvacationentriesHandler);
 
+app.post('/contest/vacation-photo/:year/:month', contestvacationprocessorHandler);
 app.post('/process',processHandler);
 app.post('/subscribeprocessor',subscribeprocessorHandler);		//subscribe的post
 
 app.use(a404Handler);											//404
-//app.use(a500Handler);											//500
+app.use(a500Handler);											//500
 
 
 
