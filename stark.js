@@ -6,6 +6,8 @@ var weather=require('./lib/weather.js');
 var credentials = require('./credentials.js');
 var formidable = require('formidable');
 var fs = require('fs');
+var mongoose = require('mongoose');
+var Vacation = require('./models/vacation.js');
 
 var handlebars = require('express3-handlebars') 	//
 	.create({ defaultLayout:'main2',				//
@@ -26,11 +28,84 @@ app.listen(app.get('port'),function(){
 });
 //------------------------------------------------------------------
 
-//发送邮件完整的，记得先把email.js放在lib里面，当然还有credeatials.js、、、、、、、、、、、
+//发送邮件完整的，记得先把email.js放在lib里面，当然还有credeatials.js
 //先把它封印在这，不然每一次开服务器都要发封邮件
+//````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
 /*var emailService=require('./lib/email.js')(credentials);
 emailService.send('destarkable@163.com','Hood River tour is on sale today!','Go get it while hot!');*/
-//、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+
+//````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+//MongoDB/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//建立数据库配置
+var options = {
+    server: {
+       socketOptions: { keepAlive: 1 } 
+    }
+};
+switch(app.get('env')){
+    case 'development':
+        mongoose.connect(credentials.mongo.development.connectionString, options);
+        break;
+    case 'production':
+        mongoose.connect(credentials.mongo.production.connectionString, options);
+        break;
+    default:
+        throw new Error('Unknown execution environment: ' + app.get('env'));
+}
+
+//初始化数据库
+Vacation.find(function(err, vacations){
+    if(vacations.length) return;
+
+    new Vacation({
+        name: 'Hood River Day Trip',
+        slug: 'hood-river-day-trip',
+        category: 'Day Trip',
+        sku: 'HR199',
+        description: 'Spend a day sailing on the Columbia and ' + 
+            'enjoying craft beers in Hood River!',
+        priceInCents: 9995,
+        tags: ['day trip', 'hood river', 'sailing', 'windsurfing', 'breweries'],
+        inSeason: true,
+        maximumGuests: 16,
+        available: true,
+        packagesSold: 0,
+    }).save();
+
+    new Vacation({
+        name: 'Oregon Coast Getaway',
+        slug: 'oregon-coast-getaway',
+        category: 'Weekend Getaway',
+        sku: 'OC39',
+        description: 'Enjoy the ocean air and quaint coastal towns!',
+        priceInCents: 269995,
+        tags: ['weekend getaway', 'oregon coast', 'beachcombing'],
+        inSeason: false,
+        maximumGuests: 8,
+        available: true,
+        packagesSold: 0,
+    }).save();
+
+    new Vacation({
+        name: 'Rock Climbing in Bend',
+        slug: 'rock-climbing-in-bend',
+        category: 'Adventure',
+        sku: 'B99',
+        description: 'Experience the thrill of rock climbing in the high desert.',
+        priceInCents: 289995,
+        tags: ['weekend getaway', 'bend', 'high desert', 'rock climbing', 'hiking', 'skiing'],
+        inSeason: true,
+        requiresWaiver: true,
+        maximumGuests: 4,
+        available: false,
+        packagesSold: 0,
+        notes: 'The tour guide is currently recovering from a skiing accident.',
+    }).save();
+});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //所有路由处理函数和中间件函数*****************************************************
 var homeHandler=function(req,res){
@@ -188,6 +263,23 @@ var contestvacationprocessorHandler = function(req, res){
 var caontestvacationentriesHandler= function(req, res){
 	res.render('contest/vacation-photo/entries');
 };
+var vacationHandler=function(req, res){
+    Vacation.find({ available: true }, function(err, vacations){
+        var currency = req.session.currency || 'USD';
+        var context = {
+            vacations: vacations.map(function(vacation){
+                return {
+                    sku: vacation.sku,
+                    name: vacation.name,
+                    description: vacation.description,
+                    inSeason: vacation.inSeason,
+                    price: vacation.getDisplayPrice(),
+                }
+            })
+        };
+        res.render('vacations', context);
+    });
+};
 //*********************************************************************
 
 //管子==============================================================================================================================
@@ -217,6 +309,7 @@ app.get('/newsletter',newsletterHandler);						//newsletter
 app.get('/subscribe',subscribeHandler);							//subscribe
 app.get('/contest/vacation-photo', contestvacationHandler);
 app.get('/contest/vacation-photo/entries', caontestvacationentriesHandler);
+app.get('/vacations', vacationHandler);
 
 app.post('/contest/vacation-photo/:year/:month', contestvacationprocessorHandler);
 app.post('/process',processHandler);
