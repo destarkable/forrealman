@@ -10,13 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "connect-rest": "^3.0.1",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
     "express3-handlebars": "^0.5.2",
     "formidable": "^1.1.1",
     "mongoose": "^4.11.9",
-    "nodemailer": "^4.0.1"
+    "nodemailer": "^4.0.1",
+    "vhost": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^4.1.1",
@@ -25,6 +28,7 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-exec": "^3.0.0",
     "mocha": "^3.5.0",
+    "restler": "^3.4.0",
     "zombie": "^5.0.7"
   }
 }

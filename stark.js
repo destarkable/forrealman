@@ -8,6 +8,9 @@ var formidable = require('formidable');
 var fs = require('fs');
 var mongoose = require('mongoose');
 var Vacation = require('./models/vacation.js');
+var Attraction = require('./models/attraction.js'); //API
+var vhost = require('vhost');                       //子域名插件
+
 
 var handlebars = require('express3-handlebars') 	//
 	.create({ defaultLayout:'main2',				//
@@ -106,6 +109,9 @@ Vacation.find(function(err, vacations){
     }).save();
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 //所有路由处理函数和中间件函数*****************************************************
 var homeHandler=function(req,res){
@@ -294,6 +300,7 @@ app.use(require('body-parser')());								//body-parser中间件
 app.use(require('cookie-parser')(credentials.cookieSecret));	//cookie-parser中间件
 app.use(require('express-session')());							//express-session中间件
 app.use(flashMiddle);											//自定义中间件，如果有flash消息就交给上下文，再清除
+app.use('/api',require('cors')());                              //cors中间件，用于跨域资源共享
 
 
 app.get('/',homeHandler);										//home
@@ -314,6 +321,7 @@ app.get('/vacations', vacationHandler);
 app.post('/contest/vacation-photo/:year/:month', contestvacationprocessorHandler);
 app.post('/process',processHandler);
 app.post('/subscribeprocessor',subscribeprocessorHandler);		//subscribe的post
+
 
 app.use(a404Handler);											//404
 app.use(a500Handler);											//500
